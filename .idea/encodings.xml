@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/comment-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/config-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/discovery-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/favorite-place-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway-server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/place-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/search-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-service/src/main/java" charset="UTF-8" />
+  </component>
+</project>
