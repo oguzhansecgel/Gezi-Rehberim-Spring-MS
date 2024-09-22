@@ -12,9 +12,8 @@
         <module name="favorite-place-service" />
         <module name="search-service" />
         <module name="gateway-server" />
-        <module name="user-service" />
       </profile>
-      <profile name="Annotation profile for place-service" enabled="true">
+      <profile name="Annotation profile for user-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -25,6 +24,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
         </processorPath>
         <module name="place-service" />
+        <module name="user-service" />
       </profile>
     </annotationProcessing>
   </component>
