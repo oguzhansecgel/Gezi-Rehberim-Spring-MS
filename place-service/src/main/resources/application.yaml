@@ -6,6 +6,10 @@ spring:
       profile: local
   config:
     import: "configserver:${configurl}"
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: kafka-topic
 
 
 configurl: http://localhost:8079

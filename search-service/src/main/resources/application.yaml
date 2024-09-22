@@ -1,0 +1,19 @@
+
+spring:
+  application:
+    name: search-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: kafka-group
+    template:
+      default-topic: kafka-topic
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+server:
+  port: 8082

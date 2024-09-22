@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface PlaceImageRepository extends JpaRepository<PlaceImage, Integer> {
     List<PlaceImage> findByPlaceId(int placeId);
+
 }

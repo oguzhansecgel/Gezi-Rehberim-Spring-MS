@@ -30,6 +30,8 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<sonar.host.url>http://localhost:9000</sonar.host.url>
+		<sonar.login>sqa_e5d3dae261600ed2f340e5818e2141b96f8d420b</sonar.login>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,10 +42,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.kafka</groupId>
-			<artifactId>spring-kafka</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -81,6 +80,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
@@ -153,6 +156,11 @@
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>4.0.0.4121</version>
 			</plugin>
 		</plugins>
 	</build>

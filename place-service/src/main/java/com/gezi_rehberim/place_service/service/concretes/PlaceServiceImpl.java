@@ -5,6 +5,7 @@ import com.gezi_rehberim.place_service.core.message.PlaceMessage;
 import com.gezi_rehberim.place_service.dto.request.place.CreatePlaceRequest;
 import com.gezi_rehberim.place_service.dto.request.place.UpdatePlaceRequest;
 import com.gezi_rehberim.place_service.dto.response.place.*;
+import com.gezi_rehberim.place_service.kafka.producer.SearchServiceProducer;
 import com.gezi_rehberim.place_service.mapper.PlaceMapping;
 import com.gezi_rehberim.place_service.model.Place;
 import com.gezi_rehberim.place_service.repositories.PlaceRepository;
@@ -18,15 +19,19 @@ import java.util.Optional;
 public class PlaceServiceImpl implements PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final SearchServiceProducer searchServiceProducer;
 
-    public PlaceServiceImpl(PlaceRepository placeRepository) {
+    public PlaceServiceImpl(PlaceRepository placeRepository, SearchServiceProducer searchServiceProducer) {
         this.placeRepository = placeRepository;
+        this.searchServiceProducer = searchServiceProducer;
     }
+
 
     @Override
     public CreatePlaceResponse createPlace(CreatePlaceRequest request) {
         Place place = PlaceMapping.INSTANCE.createPlace(request);
         Place savedPlace = placeRepository.save(place);
+        searchServiceProducer.sendMessage(new CreatePlaceResponse(savedPlace.getId(),savedPlace.getName(),savedPlace.getDescription(),savedPlace.getAddress(),savedPlace.getLatitude(),savedPlace.getLongitude(),savedPlace.getPlaceCategory().getId()));
         return new CreatePlaceResponse(savedPlace.getId(),savedPlace.getName(),savedPlace.getDescription(),savedPlace.getAddress(),savedPlace.getLatitude(),savedPlace.getLongitude(),savedPlace.getPlaceCategory().getId());
     }
 

@@ -14,7 +14,6 @@ import com.gezi_rehberim.place_service.repositories.PlaceImageRepository;
 import com.gezi_rehberim.place_service.service.abstracts.PlaceImageService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.turkcell.tcell.exception.exceptions.type.BaseBusinessException;
 
 import java.io.File;
 import java.io.IOException;

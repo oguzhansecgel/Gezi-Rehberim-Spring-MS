@@ -20,6 +20,7 @@ public interface PlaceImageMapping {
     PlaceImage createPlaceImage(CreatePlaceImageRequest request);
 
     @Mapping(source ="place.id" ,target = "placeId")
+    @Mapping(source = "imageUrl",target = "imageFile")
     GetByIdPlaceImageResponse getByIdPlaceImage(PlaceImage placeImage);
 
     @Mapping(source ="place.id" ,target = "placeId")

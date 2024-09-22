@@ -1,0 +1,72 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    container_name: gezi-rehber-elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=elasticsearch-cluster
+      - discovery.seed_hosts=elasticsearch
+      - cluster.initial_master_nodes=elasticsearch
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - common
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.14.3
+    container_name: gezi-rehber-kibana
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - common
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: gezi-rehber-zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - common
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: gezi-rehber-kafka
+    ports:
+      - "9092:9092"  # dışarıya açılan port
+      - "9093:9093"  # iç iletişim için port
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://localhost:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENER_NAMES: INSIDE,OUTSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_MAX_MESSAGE_SIZE: 104857600  # 100 MB
+    networks:
+      - common
+
+
+
+networks:
+  common:
+    driver: bridge
+
+volumes:
+  elasticsearch-data:
+    driver: local
+  kibana-data:
+    driver: local

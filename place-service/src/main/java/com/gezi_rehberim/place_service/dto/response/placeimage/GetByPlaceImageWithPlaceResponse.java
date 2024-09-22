@@ -3,6 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -10,7 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GetByPlaceImageWithPlaceResponse {
     private int id;
+
     private String imageFile;
 
     private int placeId;
+
+
 }
