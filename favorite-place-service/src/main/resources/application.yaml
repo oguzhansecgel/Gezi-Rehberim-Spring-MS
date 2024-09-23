@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: FavoritePlaceService
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/favoriteplaceservice
+
+
+
+server:
+  port: 8084

@@ -27,12 +27,14 @@ public class Place extends BaseEntity{
     @Column(nullable = false)
     private String address;
     private Double latitude;
-
     private Double longitude;
+    @ElementCollection
+    @CollectionTable(name = "place_images", joinColumns = @JoinColumn(name = "place_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "placeCategory_id")
     private PlaceCategory placeCategory;
-    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PlaceImage> images = new ArrayList<>();
+
 }

@@ -1,4 +1,6 @@
-package com.gezi_rehberim.place_service.dto.response.placeimage;
+package com.gezi_rehberim.favorite_place_service.model;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetByIdPlaceImageResponse {
-    private String imageFile;
+public class Place extends BaseEntity{
 
-    private int placeId;
 }

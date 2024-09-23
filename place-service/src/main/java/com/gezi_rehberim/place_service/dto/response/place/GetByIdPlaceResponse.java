@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,6 +24,6 @@ public class GetByIdPlaceResponse {
     private Double latitude;
 
     private Double longitude;
-
+    private List<String> imageUrls;
     private int placeCategoryId;
 }

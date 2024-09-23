@@ -10,7 +10,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -33,4 +35,12 @@ public interface PlaceMapping {
         @Mapping(source = "placeCategory.id",target = "placeCategoryId")
         GetByPlaceWithPlaceCategoryResponse getByPlaceWithPlaceCategory(Place place);
         List<GetByPlaceWithPlaceCategoryResponse> placeListToPlaceWithPlaceCategory(List<Place> place);
+
+        default List<String> map(List<MultipartFile> files) {
+                List<String> urls = new ArrayList<>();
+                for (MultipartFile file : files) {
+                        urls.add(file.getOriginalFilename());
+                }
+                return urls;
+        }
 }
