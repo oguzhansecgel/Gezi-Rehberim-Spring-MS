@@ -1,7 +1,10 @@
 package com.gezi_rehberim.user_service.service.concretes.user;
 
+import com.gezi_rehberim.user_service.core.dto.response.user.GetByIdUserResponse;
 import com.gezi_rehberim.user_service.core.dto.response.user.UserResponse;
+import com.gezi_rehberim.user_service.core.exception.user.UserNotFoundException;
 import com.gezi_rehberim.user_service.core.mapper.UserMapping;
+import com.gezi_rehberim.user_service.core.message.user.UserMessage;
 import com.gezi_rehberim.user_service.models.User;
 import com.gezi_rehberim.user_service.repository.UserRepository;
 import com.gezi_rehberim.user_service.service.abstracts.user.UserService;
@@ -27,8 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(int id) {
-        return userRepository.findById(id);
+    public Optional<GetByIdUserResponse> getUserById(int id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty())
+        {
+            throw new UserNotFoundException(UserMessage.USER_NOT_FOUND);
+        }
+        return user.map(UserMapping.INSTANCE::getByIdUserResponse);
     }
 
     @Override

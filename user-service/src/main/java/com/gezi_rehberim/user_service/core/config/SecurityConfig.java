@@ -21,21 +21,15 @@ public class SecurityConfig {
     private final BaseSecurityService baseSecurityService;
 
     private static final String[] WHITE_LIST = {
-            "/api/v1/auth/**",
-            "/swagger-ui/**",
-            "/v2/api-docs",
-            "/v3/api-docs",
-            "/v3/api-docs/**",
-            "/api/v1/**",
+            "/api/auth/**",
+
     };
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         baseSecurityService.configureCommonSecurityRules(http);
         http
                 .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-
-                                .anyRequest().permitAll()
+                        authorizeRequests.anyRequest().permitAll()
                 );
         return http.build();
     }

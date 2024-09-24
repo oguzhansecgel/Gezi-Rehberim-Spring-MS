@@ -1,4 +1,4 @@
-package com.gezi_rehberim.favorite_place_service.model;
+package com.gezi_rehberim.user_service.core.dto.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-
+public class GetByIdUserResponse {
     private int id;
     private String password;
     private String email;

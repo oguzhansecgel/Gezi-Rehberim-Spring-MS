@@ -3,9 +3,15 @@ spring:
     name: FavoritePlaceService
   data:
     mongodb:
-      uri: mongodb://localhost:27017/favoriteplaceservice
+      uri: mongodb://localhost:27017/favoriteplacedb
 
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+    register-with-eureka: true
+    fetch-registry: true
 
 server:
   port: 8084

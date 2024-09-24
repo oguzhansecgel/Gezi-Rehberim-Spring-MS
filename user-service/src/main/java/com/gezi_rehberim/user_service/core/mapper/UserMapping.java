@@ -1,6 +1,7 @@
 package com.gezi_rehberim.user_service.core.mapper;
 
 import com.gezi_rehberim.user_service.core.dto.request.user.RegisterRequest;
+import com.gezi_rehberim.user_service.core.dto.response.user.GetByIdUserResponse;
 import com.gezi_rehberim.user_service.core.dto.response.user.UserResponse;
 import com.gezi_rehberim.user_service.models.Role;
 import com.gezi_rehberim.user_service.models.User;
@@ -18,6 +19,8 @@ public interface UserMapping {
     UserMapping INSTANCE = Mappers.getMapper(UserMapping.class);
 
     User userFromRequest(RegisterRequest request);
+
+    GetByIdUserResponse getByIdUserResponse(User user);
 
     @Mapping(target = "roleId", source = "roles", qualifiedByName = "mapRolesToRoleId")
     UserResponse userFromResponse(User user);
