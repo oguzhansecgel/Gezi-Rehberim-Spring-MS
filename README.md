@@ -125,11 +125,4 @@ Gezi Rehberi, kullanıcıların gezilecek yerleri keşfetmesine olanak tanıyan 
   Belirtilen ID'ye sahip mevcut bir yorumu günceller.
 
 
-# Place Service
-# User Service
-# Search Service
-# Favorite Place Service
-# Comment Service
-# Discovery Server
-# Config Server
-# Gateway Server
+ 
