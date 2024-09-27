@@ -10,7 +10,7 @@ import com.gezi_rehberim.place_service.dto.response.placecategory.GetByIdPlaceCa
 import com.gezi_rehberim.place_service.dto.response.placecategory.UpdatePlaceCategoryResponse;
 import com.gezi_rehberim.place_service.mapper.PlaceCategoryMapping;
 import com.gezi_rehberim.place_service.model.PlaceCategory;
-import com.gezi_rehberim.place_service.repositories.PlaceCategoryRepository;
+import com.gezi_rehberim.place_service.repositories.PlaceCategoryRepositories;
 import com.gezi_rehberim.place_service.service.abstracts.PlaceCategoryService;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +20,21 @@ import java.util.Optional;
 @Service
 public class PlaceCategoryServiceImpl implements PlaceCategoryService {
 
-    private final PlaceCategoryRepository placeCategoryRepository;
+    private final PlaceCategoryRepositories placeCategoryRepositories;
 
-    public PlaceCategoryServiceImpl(PlaceCategoryRepository placeCategoryRepository) {
-        this.placeCategoryRepository = placeCategoryRepository;
+    public PlaceCategoryServiceImpl(PlaceCategoryRepositories placeCategoryRepositories) {
+        this.placeCategoryRepositories = placeCategoryRepositories;
     }
 
     @Override
     public List<GetAllPlaceCategoryResponse> getAllPlaceCategory() {
-        List<PlaceCategory> placeCategoryList = placeCategoryRepository.findAll();
+        List<PlaceCategory> placeCategoryList = placeCategoryRepositories.findAll();
         return PlaceCategoryMapping.INSTANCE.placeCategoryListPlaceCategory(placeCategoryList);
     }
 
     @Override
     public Optional<GetByIdPlaceCategoryResponse> getByIdPlaceCategory(int id) {
-        Optional<PlaceCategory> placeCategory = placeCategoryRepository.findById(id);
+        Optional<PlaceCategory> placeCategory = placeCategoryRepositories.findById(id);
         if (placeCategory.isEmpty())
         {
             throw new PlaceCategoryNotFoundException(PlaceCategoryMessage.PLACE_CATEGORY_NOT_FOUND);
@@ -46,30 +46,30 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
     @Override
     public CreatePlaceCategoryResponse createPlaceCategory(CreatePlaceCategoryRequest request) {
         PlaceCategory placeCategory = PlaceCategoryMapping.INSTANCE.createPlaceCategory(request);
-        PlaceCategory savedPlaceCategory = placeCategoryRepository.save(placeCategory);
+        PlaceCategory savedPlaceCategory = placeCategoryRepositories.save(placeCategory);
         return new CreatePlaceCategoryResponse(savedPlaceCategory.getId(), savedPlaceCategory.getCategoryName());
     }
 
     @Override
     public UpdatePlaceCategoryResponse updatePlaceCategory(UpdatePlaceCategoryRequest request, int id) {
-        Optional<PlaceCategory> optionalPlaceCategory = placeCategoryRepository.findById(id);
+        Optional<PlaceCategory> optionalPlaceCategory = placeCategoryRepositories.findById(id);
         if (optionalPlaceCategory.isEmpty())
         {
             throw new PlaceCategoryNotFoundException(PlaceCategoryMessage.PLACE_CATEGORY_NOT_FOUND);
         }
         PlaceCategory existingPlaceCategory = optionalPlaceCategory.get();
         PlaceCategory placeCategory = PlaceCategoryMapping.INSTANCE.updatePlaceCategory(request, existingPlaceCategory);
-        PlaceCategory savedPlaceCategory = placeCategoryRepository.save(placeCategory);
+        PlaceCategory savedPlaceCategory = placeCategoryRepositories.save(placeCategory);
         return new UpdatePlaceCategoryResponse(savedPlaceCategory.getId(), savedPlaceCategory.getCategoryName());
     }
 
     @Override
     public void deletePlaceCategory(int id) {
-        Optional<PlaceCategory> optionalPlaceCategory  = placeCategoryRepository.findById(id);
+        Optional<PlaceCategory> optionalPlaceCategory  = placeCategoryRepositories.findById(id);
         if (optionalPlaceCategory.isEmpty())
         {
             throw new PlaceCategoryNotFoundException(PlaceCategoryMessage.PLACE_CATEGORY_NOT_FOUND);
         }
-        placeCategoryRepository.deleteById(id);
+        placeCategoryRepositories.deleteById(id);
     }
 }

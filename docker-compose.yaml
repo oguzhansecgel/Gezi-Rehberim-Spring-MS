@@ -1,6 +1,29 @@
 version: '3.8'
 
 services:
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8079:8079"
+    environment:
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/oguzhansecgel/gezi-rehberim-config-server
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_CLONE_ON_START=true
+    networks:
+      - common
+  discovery-server:
+    build:
+      context: ./discovery-server
+    ports:
+      - "8888:8888"
+    restart: on-failure
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - CONFIGURL=http://config-server:8079
+    networks:
+      - common
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
     container_name: gezi-rehber-elasticsearch

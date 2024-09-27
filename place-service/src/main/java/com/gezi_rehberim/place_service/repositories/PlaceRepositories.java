@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PlaceRepository extends JpaRepository<Place, Integer> {
+public interface PlaceRepositories extends JpaRepository<Place, Integer> {
 
     List<Place> findAllByPlaceCategoryId(int placeCategoryId);
 }

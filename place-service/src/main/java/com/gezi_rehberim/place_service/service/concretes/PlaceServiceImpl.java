@@ -8,7 +8,7 @@ import com.gezi_rehberim.place_service.dto.response.place.*;
 import com.gezi_rehberim.place_service.kafka.producer.SearchServiceProducer;
 import com.gezi_rehberim.place_service.mapper.PlaceMapping;
 import com.gezi_rehberim.place_service.model.Place;
-import com.gezi_rehberim.place_service.repositories.PlaceRepository;
+import com.gezi_rehberim.place_service.repositories.PlaceRepositories;
 import com.gezi_rehberim.place_service.core.service.abstracts.PlaceImageService;
 import com.gezi_rehberim.place_service.service.abstracts.PlaceService;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ import java.util.Optional;
 @Service
 public class PlaceServiceImpl implements PlaceService {
 
-    private final PlaceRepository placeRepository;
+    private final PlaceRepositories placeRepositories;
     private final PlaceImageService placeImageService;
     private final SearchServiceProducer searchServiceProducer;
 
-    public PlaceServiceImpl(PlaceRepository placeRepository, PlaceImageService placeImageService, SearchServiceProducer searchServiceProducer) {
-        this.placeRepository = placeRepository;
+    public PlaceServiceImpl(PlaceRepositories placeRepositories, PlaceImageService placeImageService, SearchServiceProducer searchServiceProducer) {
+        this.placeRepositories = placeRepositories;
         this.placeImageService = placeImageService;
         this.searchServiceProducer = searchServiceProducer;
     }
@@ -36,7 +36,7 @@ public class PlaceServiceImpl implements PlaceService {
 
         place.setImageUrls(imageUrls);
 
-        Place savedPlace = placeRepository.save(place);
+        Place savedPlace = placeRepositories.save(place);
 
         searchServiceProducer.sendMessage(new CreatePlaceResponse(
                 savedPlace.getId(),
@@ -64,20 +64,20 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public UpdatePlaceResponse updatePlace(UpdatePlaceRequest request, int id) {
-        Optional<Place> place = placeRepository.findById(id);
+        Optional<Place> place = placeRepositories.findById(id);
         if (place.isEmpty())
         {
             throw new PlaceNotFoundException(PlaceMessage.PLACE_NOT_FOUND);
         }
         Place placeToUpdate = place.get();
         Place updatedPlace = PlaceMapping.INSTANCE.updatePlace(request, placeToUpdate);
-        Place savedPlace = placeRepository.save(updatedPlace);
+        Place savedPlace = placeRepositories.save(updatedPlace);
         return new UpdatePlaceResponse(savedPlace.getId(),savedPlace.getName(),savedPlace.getDescription(),savedPlace.getAddress(),savedPlace.getLatitude(),savedPlace.getLongitude(),savedPlace.getImageUrls(),savedPlace.getPlaceCategory().getId());
     }
 
     @Override
     public Optional<GetByIdPlaceResponse> getByIdPlace(int id) {
-        Optional<Place> place = placeRepository.findById(id);
+        Optional<Place> place = placeRepositories.findById(id);
         if (place.isEmpty())
         {
             throw new PlaceNotFoundException(PlaceMessage.PLACE_NOT_FOUND);
@@ -87,19 +87,19 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     public List<GetAllPlaceResponse> getAllPlaceList() {
-        List<Place> places = placeRepository.findAll();
+        List<Place> places = placeRepositories.findAll();
         return PlaceMapping.INSTANCE.placeToListPlace(places);
     }
 
     @Override
     public List<GetByPlaceWithPlaceCategoryResponse> getByPlaceWithPlaceCategory(int id) {
-        List<Place> placeList = placeRepository.findAllByPlaceCategoryId(id);
+        List<Place> placeList = placeRepositories.findAllByPlaceCategoryId(id);
         return PlaceMapping.INSTANCE.placeListToPlaceWithPlaceCategory(placeList);
     }
 
     @Override
     public void deletePlace(int id) {
-        Optional<Place> optionalPlace = placeRepository.findById(id);
+        Optional<Place> optionalPlace = placeRepositories.findById(id);
         if (optionalPlace.isEmpty()) {
             throw new PlaceNotFoundException(PlaceMessage.PLACE_NOT_FOUND);
         }
@@ -109,6 +109,6 @@ public class PlaceServiceImpl implements PlaceService {
         List<String> imageUrls = place.getImageUrls();
         placeImageService.deletedImage(imageUrls);
 
-        placeRepository.deleteById(id);
+        placeRepositories.deleteById(id);
     }
 }

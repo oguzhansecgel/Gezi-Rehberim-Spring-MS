@@ -1,4 +1,4 @@
-package com.gezi_rehberim.favorite_place_service.core.dto.request.favoriteplace;
+package com.gezi_rehberim.comment_service.core.dto.request.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateFavoritePlaceRequest {
+public class UpdateCommentRequest {
+    private String comment;
     private int placeId;
     private int userId;
 }

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Search
+    name: Gateway
   cloud:
     config:
       profile: local

@@ -6,7 +6,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import java.util.List;
 
-public interface PlaceRepository extends ElasticsearchRepository<Place,Integer> {
+public interface PlaceRepositories extends ElasticsearchRepository<Place,Integer> {
 
     @Query("{\"wildcard\": {\"name\": \"*?0*\"}}")
     List<Place> searchByName(String name);

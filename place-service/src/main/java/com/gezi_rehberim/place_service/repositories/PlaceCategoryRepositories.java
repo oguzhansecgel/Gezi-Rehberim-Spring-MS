@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlaceCategoryRepository extends JpaRepository<PlaceCategory, Integer> {
+public interface PlaceCategoryRepositories extends JpaRepository<PlaceCategory, Integer> {
 }

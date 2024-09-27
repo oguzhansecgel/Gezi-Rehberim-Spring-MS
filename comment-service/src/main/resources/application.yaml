@@ -1,10 +1,11 @@
 spring:
   application:
-    name: Search
+    name: Comment
   cloud:
     config:
       profile: local
   config:
     import: "configserver:${configurl}"
+
 
 configurl: http://localhost:8079

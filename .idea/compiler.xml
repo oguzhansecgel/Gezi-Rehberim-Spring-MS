@@ -8,11 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="gateway-server" />
-        <module name="comment-service" />
         <module name="discovery-server" />
         <module name="search-service" />
       </profile>
-      <profile name="Annotation profile for user-service" enabled="true">
+      <profile name="Annotation profile for comment-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -22,9 +21,10 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
         </processorPath>
+        <module name="comment-service" />
+        <module name="user-service" />
         <module name="favorite-place-service" />
         <module name="place-service" />
-        <module name="user-service" />
       </profile>
     </annotationProcessing>
   </component>
