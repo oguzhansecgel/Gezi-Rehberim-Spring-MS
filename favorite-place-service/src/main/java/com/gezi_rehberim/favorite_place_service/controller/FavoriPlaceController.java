@@ -33,4 +33,9 @@ public class FavoriPlaceController {
     {
         return favoritePlaceService.createFavoritePlace(userId, placeId);
     }
+    @DeleteMapping("/delete/favoritePlace/{favoritePlaceId}")
+    public void deleteFavoritePlace(@PathVariable String favoritePlaceId)
+    {
+        favoritePlaceService.removeFavoritePlace(favoritePlaceId);
+    }
 }

@@ -19,6 +19,6 @@ public class SearchServiceProducer {
 
     public void sendMessage(CreatePlaceResponse message) {
         kafkaTemplate.send(defaultTopic, message);
-        System.out.println("Sistem Çalışıyor Denemesi : " + message);
+
     }
 }

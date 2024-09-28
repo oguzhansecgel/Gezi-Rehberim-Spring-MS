@@ -22,7 +22,7 @@ public class PlaceCategoryController {
     public PlaceCategoryController(PlaceCategoryService placeCategoryService) {
         this.placeCategoryService = placeCategoryService;
     }
-    @GetMapping("/getById/placeCategory")
+    @GetMapping("/getById/placeCategory/{id}")
     public Optional<GetByIdPlaceCategoryResponse> getByIdPlaceCategory(@PathVariable int id)
     {
         return placeCategoryService.getByIdPlaceCategory(id);
@@ -32,7 +32,7 @@ public class PlaceCategoryController {
     {
         return placeCategoryService.getAllPlaceCategory();
     }
-    @DeleteMapping("/delete/placeCategory")
+    @DeleteMapping("/delete/placeCategory/{id}")
     public void deletePlaceCategory(@PathVariable int id)
     {
         placeCategoryService.deletePlaceCategory(id);

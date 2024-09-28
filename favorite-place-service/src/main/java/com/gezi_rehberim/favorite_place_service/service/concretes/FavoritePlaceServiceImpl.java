@@ -4,9 +4,11 @@ import com.gezi_rehberim.favorite_place_service.client.PlaceClient;
 import com.gezi_rehberim.favorite_place_service.client.UserClient;
 import com.gezi_rehberim.favorite_place_service.core.dto.response.favoriteplace.CreateFavoritePlaceResponse;
 import com.gezi_rehberim.favorite_place_service.core.dto.response.favoriteplace.GetAllFavoritePlaceResponse;
+import com.gezi_rehberim.favorite_place_service.core.exception.favoriteplace.FavoritePlaceNotFoundException;
 import com.gezi_rehberim.favorite_place_service.core.exception.place.PlaceNotFoundException;
 import com.gezi_rehberim.favorite_place_service.core.exception.user.UserNotFoundException;
 import com.gezi_rehberim.favorite_place_service.core.mapper.FavoritePlaceMapper;
+import com.gezi_rehberim.favorite_place_service.core.message.favoriteplace.FavoritePlaceMessage;
 import com.gezi_rehberim.favorite_place_service.core.message.place.PlaceMessage;
 import com.gezi_rehberim.favorite_place_service.core.message.user.UserMessage;
 import com.gezi_rehberim.favorite_place_service.model.FavoritePlace;
@@ -46,8 +48,9 @@ public class FavoritePlaceServiceImpl implements FavoritePlaceService {
         FavoritePlace favoritePlace = new FavoritePlace();
         favoritePlace.setPlace(getPlace);
         favoritePlace.setUser(getUser);
+        favoritePlace.setFavorite(true);
         favoritePlaceRepositories.save(favoritePlace);
-        return new CreateFavoritePlaceResponse(favoritePlace.getId(),favoritePlace.getPlace(),favoritePlace.getUser());
+        return new CreateFavoritePlaceResponse(favoritePlace.getId(),favoritePlace.getPlace(),favoritePlace.getUser(),favoritePlace.isFavorite());
 
     }
 
@@ -60,5 +63,16 @@ public class FavoritePlaceServiceImpl implements FavoritePlaceService {
     @Override
     public List<FavoritePlace> getAllFavoritePlacesByUserId(int userId) {
         return favoritePlaceRepositories.findByUserId(userId);
+    }
+
+    @Override
+    public void removeFavoritePlace(String favoritePlaceId) {
+        Optional<FavoritePlace> optionalFavoritePlace = favoritePlaceRepositories.findById(favoritePlaceId);
+        if (optionalFavoritePlace.isEmpty())
+            throw new FavoritePlaceNotFoundException(FavoritePlaceMessage.FAVORITE_PLACE_NOT_FOUND);
+
+        FavoritePlace favoritePlace = optionalFavoritePlace.get();
+        favoritePlace.setFavorite(false);
+        favoritePlaceRepositories.save(favoritePlace);
     }
 }

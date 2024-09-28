@@ -15,4 +15,5 @@ public class GetAllFavoritePlaceResponse {
     private String id;
     private Place place;
     private User user;
+    private boolean isFavorite;
 }

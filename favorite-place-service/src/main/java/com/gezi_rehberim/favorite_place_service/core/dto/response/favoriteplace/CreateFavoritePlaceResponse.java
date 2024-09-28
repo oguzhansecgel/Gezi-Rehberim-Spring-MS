@@ -16,4 +16,5 @@ public class CreateFavoritePlaceResponse {
     private String id;
     private Place place;
     private User user;
+    private boolean isFavorite;
 }

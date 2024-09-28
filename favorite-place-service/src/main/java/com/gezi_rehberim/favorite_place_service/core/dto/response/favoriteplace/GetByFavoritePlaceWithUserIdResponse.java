@@ -16,4 +16,5 @@ public class GetByFavoritePlaceWithUserIdResponse {
     private String id;
     private List<Place> place;
     private User user;
+    private boolean isFavorite;
 }

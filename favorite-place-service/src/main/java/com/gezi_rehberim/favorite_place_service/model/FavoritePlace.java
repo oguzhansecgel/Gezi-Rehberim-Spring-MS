@@ -18,5 +18,5 @@ public class FavoritePlace {
     private String id;
     private Place place;
     private User user;
-
+    private boolean isFavorite;
 }
