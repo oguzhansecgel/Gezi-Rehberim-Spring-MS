@@ -1,6 +1,86 @@
 version: '3.8'
 
 services:
+  comment-service:
+    container_name: comment-service-prod
+    build:
+      context: ./comment-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    restart: on-failure
+    depends_on:
+      - comment-db
+      - discovery-server
+      - config-server
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - CONFIGURL=http://config-server:8079
+      - SPRING_DATA_MONGODB_URI=mongodb://comment-db:27017/commentservicedb
+
+  favorite-place-service:
+    container_name: favorite-place-service-prod
+    build:
+      context: ./favorite-place-service
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    restart: on-failure
+    depends_on:
+      - favorite-place-db
+      - discovery-server
+      - config-server
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - CONFIGURL=http://config-server:8079
+      - SPRING_DATA_MONGODB_URI=mongodb://favorite-place-db:27017/favoriteplacedb
+
+
+  place-service:
+    container_name: place-service-prod
+    build:
+      context: ./place-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    depends_on:
+      - place-db
+      - discovery-server
+      - config-server
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - CONFIGURL=http://config-server:8079
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://place-db:5432/place-service
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=test
+
+  search-service:
+    container_name: search-service-prod
+    build:
+      context: ./search-service
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    restart: on-failure
+    depends_on:
+      - elasticsearch
+      - discovery-server
+      - config-server
+    networks:
+      - common
+    environment:
+      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - CONFIGURL=http://config-server:8079
+      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+
+
   config-server:
     build:
       context: ./config-server
@@ -24,6 +104,44 @@ services:
       - CONFIGURL=http://config-server:8079
     networks:
       - common
+
+  comment-db:
+    image: mongo:latest
+    container_name: comment-db-prod
+    ports:
+      - "27030:27017"
+    volumes:
+      - comment-data-prod:/data/db
+    networks:
+      - common
+
+
+  favorite-place-db:
+    image: mongo:latest
+    container_name: favorite-place-db-prod
+    ports:
+      - "27031:27017"
+    volumes:
+      - favorite-place-data-prod:/data/db
+    networks:
+      - common
+
+  place-db:
+    image: postgres
+    container_name: place-db-prod
+    environment:
+      POSTGRES_DB: place-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5433:5432"
+    volumes:
+      - place_data_prod:/var/lib/postgresql/data
+    networks:
+      - common
+
+
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
     container_name: gezi-rehber-elasticsearch
@@ -84,7 +202,12 @@ services:
     networks:
       - common
 
-
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - common
 networks:
   common:
     driver: bridge
@@ -93,4 +216,11 @@ networks:
 volumes:
   elasticsearch-data:
     driver: local
+  comment-data-prod:
+    driver: local
+  favorite-place-data-prod:
+    driver: local
+  place_data_prod:
+    driver: local
+
 

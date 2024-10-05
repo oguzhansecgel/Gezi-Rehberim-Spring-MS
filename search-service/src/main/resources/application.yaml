@@ -1,6 +1,10 @@
 spring:
   application:
     name: Search
+  data:
+    elasticsearch:
+      rest:
+        uris: http://elasticsearch:9200
   cloud:
     config:
       profile: local

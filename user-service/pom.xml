@@ -56,9 +56,9 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.turkcell</groupId>
-			<artifactId>tcell.exception3</artifactId>
-			<version>2.0.5</version>
+			<groupId>io.github.oguzhansecgel</groupId>
+			<artifactId>exception</artifactId>
+			<version>2.0.6</version>
 		</dependency>
 
 		<dependency>
@@ -93,9 +93,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.turkcell</groupId>
-			<artifactId>tcell.core</artifactId>
-			<version>2.0.5</version>
+			<groupId>io.github.oguzhansecgel</groupId>
+			<artifactId>exception</artifactId>
+			<version>2.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
