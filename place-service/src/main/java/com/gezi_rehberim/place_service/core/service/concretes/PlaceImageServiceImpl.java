@@ -46,7 +46,7 @@ public class PlaceImageServiceImpl implements PlaceImageService {
                 imageUrls.add(filePath.toString());
 
             } catch (IOException e) {
-                throw new PlaceNotFoundException(PlaceImageMessage.PLACE_IMAGE_NOT_FOUNT);
+                throw new PlaceNotFoundException(PlaceImageMessage.PLACE_IMAGE_NOT_FOUND_FILE);
             }
         }
 

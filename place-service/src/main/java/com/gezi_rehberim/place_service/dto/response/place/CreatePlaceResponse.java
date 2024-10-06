@@ -25,6 +25,5 @@ public class CreatePlaceResponse {
     private Double latitude;
 
     private Double longitude;
-    private List<String> imageUrls;
     private int placeCategoryId;
 }

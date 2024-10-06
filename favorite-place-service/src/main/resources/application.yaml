@@ -1,17 +1,16 @@
 spring:
   application:
-    name: FavoritePlaceService
+    name: FavoritePlace
   data:
     mongodb:
       uri: mongodb://localhost:27017/favoriteplacedb
+  cloud:
+    config:
+      profile: local
+  config:
+    import: "configserver:${configurl}"
 
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8888/eureka/
-    register-with-eureka: true
-    fetch-registry: true
+configurl: http://localhost:8079
 
-server:
-  port: 8084
+

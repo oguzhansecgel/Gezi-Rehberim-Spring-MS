@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@EnableElasticsearchRepositories
 public interface PlaceRepositories extends ElasticsearchRepository<Place,Integer> {
 
     @Query("{\"wildcard\": {\"name\": \"*?0*\"}}")

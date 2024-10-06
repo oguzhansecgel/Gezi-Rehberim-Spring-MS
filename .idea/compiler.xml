@@ -23,8 +23,8 @@
         </processorPath>
         <module name="comment-service" />
         <module name="user-service" />
-        <module name="place-service" />
         <module name="favorite-place-service" />
+        <module name="place-service" />
       </profile>
     </annotationProcessing>
   </component>

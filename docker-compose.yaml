@@ -16,7 +16,7 @@ services:
     networks:
       - common
     environment:
-      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
       - CONFIGURL=http://config-server:8079
       - SPRING_DATA_MONGODB_URI=mongodb://comment-db:27017/commentservicedb
 
@@ -35,7 +35,7 @@ services:
     networks:
       - common
     environment:
-      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
       - CONFIGURL=http://config-server:8079
       - SPRING_DATA_MONGODB_URI=mongodb://favorite-place-db:27017/favoriteplacedb
 
@@ -47,6 +47,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
+    volumes:
+      - ./uploads:/place-service/uploads
     restart: on-failure
     depends_on:
       - place-db
@@ -55,31 +57,50 @@ services:
     networks:
       - common
     environment:
-      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
       - CONFIGURL=http://config-server:8079
       - SPRING_DATASOURCE_URL=jdbc:postgresql://place-db:5432/place-service
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=test
 
-  search-service:
-    container_name: search-service-prod
+  user-service:
+    container_name: user-service-prod
     build:
-      context: ./search-service
+      context: ./user-service
       dockerfile: Dockerfile
     ports:
-      - "8085:8085"
+      - "8082:8082"
     restart: on-failure
     depends_on:
-      - elasticsearch
+      - user-db
       - discovery-server
       - config-server
     networks:
       - common
     environment:
-      - SPRING_CLOUD_CONFIG_PROFILE=local
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
       - CONFIGURL=http://config-server:8079
-      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user-db:5432/user-service
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=test
 
+  search-service:
+    container_name: search-service
+    build:
+      context: ./search-service
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      - SPRING_DATA_ELASTICSEARCH_REST_URIS=http://elasticsearch:9200
+      - SPRING_CLOUD_CONFIG_PROFILE=prod
+      - CONFIGURL=http://config-server:8079
+    ports:
+      - "8085:8085"
+    networks:
+      - common
+    depends_on:
+      - elasticsearch
+      - config-server
 
   config-server:
     build:
@@ -140,6 +161,20 @@ services:
     networks:
       - common
 
+  user-db:
+    image: postgres
+    container_name: user-db-prod
+    environment:
+      POSTGRES_DB: user-service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5434:5432"
+    volumes:
+      - user_data_prod:/var/lib/postgresql/data
+    networks:
+      - common
+
 
 
   elasticsearch:
@@ -163,6 +198,7 @@ services:
       memlock:
         soft: -1
         hard: -1
+
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.14.3
@@ -192,7 +228,7 @@ services:
       - "9092:9092"
       - "9093:9093"
     environment:
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://localhost:9093,OUTSIDE://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
       KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://0.0.0.0:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_LISTENER_NAMES: INSIDE,OUTSIDE
@@ -221,6 +257,8 @@ volumes:
   favorite-place-data-prod:
     driver: local
   place_data_prod:
+    driver: local
+  user_data_prod:
     driver: local
 
 

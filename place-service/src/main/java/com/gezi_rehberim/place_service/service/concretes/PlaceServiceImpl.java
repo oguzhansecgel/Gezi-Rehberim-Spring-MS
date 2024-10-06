@@ -45,7 +45,6 @@ public class PlaceServiceImpl implements PlaceService {
                 savedPlace.getAddress(),
                 savedPlace.getLatitude(),
                 savedPlace.getLongitude(),
-                savedPlace.getImageUrls(),
                 savedPlace.getPlaceCategory().getId()
         ));
 
@@ -56,7 +55,6 @@ public class PlaceServiceImpl implements PlaceService {
                 savedPlace.getAddress(),
                 savedPlace.getLatitude(),
                 savedPlace.getLongitude(),
-                savedPlace.getImageUrls(),
                 savedPlace.getPlaceCategory().getId()
         );
 
