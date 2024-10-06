@@ -189,15 +189,10 @@ services:
       - xpack.security.enabled=false
     ports:
       - "9200:9200"
-      - "9300:9300"
     networks:
       - common
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
 
 
   kibana:

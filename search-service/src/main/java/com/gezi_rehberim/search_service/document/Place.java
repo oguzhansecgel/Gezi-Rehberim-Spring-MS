@@ -14,7 +14,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @NoArgsConstructor
 public class Place {
     @Id
-    private int id;
+    private String id;
     private String name;
     private String description;
     private String address;
