@@ -8,13 +8,14 @@ import com.gezi_rehberim.place_service.model.PlaceCategory;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PlaceCategoryMapping {
 
-    PlaceCategoryMapping INSTANCE = Mappers.getMapper(PlaceCategoryMapping.class);
+
 
     PlaceCategory createPlaceCategory(CreatePlaceCategoryRequest request);
 

@@ -12,6 +12,7 @@ import com.gezi_rehberim.place_service.mapper.PlaceCategoryMapping;
 import com.gezi_rehberim.place_service.model.PlaceCategory;
 import com.gezi_rehberim.place_service.repositories.PlaceCategoryRepositories;
 import com.gezi_rehberim.place_service.service.abstracts.PlaceCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +22,17 @@ import java.util.Optional;
 public class PlaceCategoryServiceImpl implements PlaceCategoryService {
 
     private final PlaceCategoryRepositories placeCategoryRepositories;
+    private final PlaceCategoryMapping placeCategoryMapping;
 
-    public PlaceCategoryServiceImpl(PlaceCategoryRepositories placeCategoryRepositories) {
+    public PlaceCategoryServiceImpl(PlaceCategoryRepositories placeCategoryRepositories, PlaceCategoryMapping placeCategoryMapping) {
         this.placeCategoryRepositories = placeCategoryRepositories;
+        this.placeCategoryMapping = placeCategoryMapping;
     }
 
     @Override
     public List<GetAllPlaceCategoryResponse> getAllPlaceCategory() {
         List<PlaceCategory> placeCategoryList = placeCategoryRepositories.findAll();
-        return PlaceCategoryMapping.INSTANCE.placeCategoryListPlaceCategory(placeCategoryList);
+        return placeCategoryMapping.placeCategoryListPlaceCategory(placeCategoryList);
     }
 
     @Override
@@ -40,12 +43,12 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             throw new PlaceCategoryNotFoundException(PlaceCategoryMessage.PLACE_CATEGORY_NOT_FOUND);
         }
 
-        return placeCategory.map(PlaceCategoryMapping.INSTANCE::getByIdPlaceCategory);
+        return placeCategory.map(placeCategoryMapping::getByIdPlaceCategory);
     }
 
     @Override
     public CreatePlaceCategoryResponse createPlaceCategory(CreatePlaceCategoryRequest request) {
-        PlaceCategory placeCategory = PlaceCategoryMapping.INSTANCE.createPlaceCategory(request);
+        PlaceCategory placeCategory = placeCategoryMapping.createPlaceCategory(request);
         PlaceCategory savedPlaceCategory = placeCategoryRepositories.save(placeCategory);
         return new CreatePlaceCategoryResponse(savedPlaceCategory.getId(), savedPlaceCategory.getCategoryName());
     }
@@ -58,7 +61,7 @@ public class PlaceCategoryServiceImpl implements PlaceCategoryService {
             throw new PlaceCategoryNotFoundException(PlaceCategoryMessage.PLACE_CATEGORY_NOT_FOUND);
         }
         PlaceCategory existingPlaceCategory = optionalPlaceCategory.get();
-        PlaceCategory placeCategory = PlaceCategoryMapping.INSTANCE.updatePlaceCategory(request, existingPlaceCategory);
+        PlaceCategory placeCategory = placeCategoryMapping.updatePlaceCategory(request, existingPlaceCategory);
         PlaceCategory savedPlaceCategory = placeCategoryRepositories.save(placeCategory);
         return new UpdatePlaceCategoryResponse(savedPlaceCategory.getId(), savedPlaceCategory.getCategoryName());
     }
