@@ -1,5 +1,5 @@
 # Gezi-Rehberim-Spring-MS
-Gezi Rehberi, kullanıcıların gezilecek yerleri keşfetmesine olanak tanıyan bir uygulamadır. Kullanıcılar, yerleri favori olarak ekleyebilir, yorum yapabilir ve arama yapabilir.
+Gezi Rehberi, kullanıcıların gezilecek yerleri keşfetmesine olanak tanıyan bir uygulamadır. Kullanıcılar, yerleri favori olarak ekleyebilir, yorum yapabilir ve arama yapabilir..
 
 ## Mikro Hizmetler
 
