@@ -24,4 +24,17 @@ public class CreatePlaceRequest {
     private Double longitude;
     private List<MultipartFile> imageUrls;
     private int placeCategoryId;
+
+    @Override
+    public String toString() {
+        return "CreatePlaceRequest{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", imageUrls=" + imageUrls +
+                ", placeCategoryId=" + placeCategoryId +
+                '}';
+    }
 }

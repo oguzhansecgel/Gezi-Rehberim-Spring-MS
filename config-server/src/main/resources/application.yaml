@@ -1,11 +1,13 @@
 spring:
   application:
-    name: configserver
+    name: config-server
   cloud:
     config:
       server:
         git:
           uri: https://github.com/oguzhansecgel/gezi-rehberim-config-server
-
+          default-label: origin/main
+  profiles:
+    active: prod
 server:
   port: 8079

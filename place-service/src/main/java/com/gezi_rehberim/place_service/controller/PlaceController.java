@@ -5,6 +5,8 @@ import com.gezi_rehberim.place_service.dto.request.place.UpdatePlaceRequest;
 import com.gezi_rehberim.place_service.dto.response.place.*;
 import com.gezi_rehberim.place_service.service.abstracts.PlaceService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class PlaceController {
     {
         return placeService.getAllPlaceList();
     }
+
     @GetMapping("/getList/PlaceWithPlaceCategory/{categoryId}")
     public List<GetByPlaceWithPlaceCategoryResponse> getByPlaceWithPlaceCategoryResponses(@PathVariable int categoryId)
     {
@@ -41,6 +44,7 @@ public class PlaceController {
     {
         placeService.deletePlace(id);
     }
+
     @ApiOperation(value = "Create Place", notes = "Create a new place with images.")
     @PostMapping(value = "/create/place", consumes = "multipart/form-data")
     public CreatePlaceResponse createPlace(

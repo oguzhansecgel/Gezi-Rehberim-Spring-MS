@@ -54,8 +54,14 @@ services:
       - place-db
       - discovery-server
       - config-server
+      - redis
     networks:
       - common
+    healthcheck:
+      test: "curl --fail --silent localhost:8081/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      retries: 5
+      start_period: 30s
     environment:
       - SPRING_CLOUD_CONFIG_PROFILE=prod
       - CONFIGURL=http://config-server:8079
@@ -110,7 +116,7 @@ services:
       - "8079:8079"
     environment:
       - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/oguzhansecgel/gezi-rehberim-config-server
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=prod
       - SPRING_CLOUD_CONFIG_SERVER_GIT_CLONE_ON_START=true
     networks:
       - common
@@ -233,16 +239,44 @@ services:
     networks:
       - common
 
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+    networks:
+      - common
   mongodb:
     image: mongo
     ports:
       - "27017:27017"
     networks:
       - common
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-gezi-rehberim
+    volumes:
+      - ./monitoring/observability/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - common
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana-gezi-rehberim
+    ports:
+      - "3000:3000"
+    networks:
+      - common
+
 networks:
   common:
     driver: bridge
-
 
 volumes:
   elasticsearch-data:
@@ -255,5 +289,6 @@ volumes:
     driver: local
   user_data_prod:
     driver: local
-
+  redis-data:
+    driver: local
 

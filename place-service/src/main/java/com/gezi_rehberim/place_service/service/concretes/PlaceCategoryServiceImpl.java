@@ -12,7 +12,6 @@ import com.gezi_rehberim.place_service.mapper.PlaceCategoryMapping;
 import com.gezi_rehberim.place_service.model.PlaceCategory;
 import com.gezi_rehberim.place_service.repositories.PlaceCategoryRepositories;
 import com.gezi_rehberim.place_service.service.abstracts.PlaceCategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

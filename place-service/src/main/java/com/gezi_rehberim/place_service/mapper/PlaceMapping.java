@@ -15,10 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PlaceMapping {
 
-        PlaceMapping INSTANCE = Mappers.getMapper(PlaceMapping.class);
+
 
 
         @Mapping(source = "placeCategoryId", target = "placeCategory.id")

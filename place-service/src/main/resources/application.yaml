@@ -3,7 +3,7 @@ spring:
     name: Place
   cloud:
     config:
-      profile: local
+      profile: prod
   config:
     import: "configserver:${configurl}"
   kafka:
@@ -11,7 +11,20 @@ spring:
     template:
       default-topic: kafka-topic
 
+  redis:
+    host: redis_container
+    port: 6379
 
-configurl: http://localhost:8079
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+
+configurl: http://configserver:8079
 
 
