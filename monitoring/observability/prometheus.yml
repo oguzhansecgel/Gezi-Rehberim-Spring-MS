@@ -3,6 +3,13 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
+  - job_name: 'place-service-logs'
+    static_configs:
+      - targets: [ 'loki:3100' ]  # Burada doğru portu kullandığınızdan emin olun
+        labels:
+          job: place-service
+          __path__: /var/log/place-service/*.log
+
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']

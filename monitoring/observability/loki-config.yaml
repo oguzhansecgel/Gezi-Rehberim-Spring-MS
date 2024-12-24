@@ -1,0 +1,32 @@
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9095
+
+# Depolama ayarları
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /data/loki/index  # İndekslerin depolandığı yer
+    cache_location: /data/loki/cache  # Cache dosyalarının depolandığı yer
+    resync_interval: 5m  # Veritabanı senkronizasyon aralığı
+    retention_policy: 24h  # 24 saatlik periyodik indeksleme
+
+  filesystem:
+    directory: /data/loki/chunks  # Verilerin depolandığı dizin
+
+# Schema yapılandırması
+schema_config:
+  configs:
+    - from: 2024-12-24  # Geçerli olacak tarih
+      store: boltdb-shipper  # Veri depolama türü
+      object_store: filesystem  # Nesne depolama
+      schema: v11  # Şema sürümü
+
+# Clients - Promtail'in Loki'ye veri göndereceği URL
+clients:
+  - url: http://loki:3100/api/prom/push  # Loki'ye veri göndermek için URL (Burada <loki-instance> kısmını değiştirmelisiniz)
+
+# Query Limits
+limits_config:
+  max_query_lookback: 0s
+  max_streams_per_user: 10000
+  max_global_streams_per_user: 10000

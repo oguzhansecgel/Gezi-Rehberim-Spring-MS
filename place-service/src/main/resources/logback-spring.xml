@@ -1,0 +1,24 @@
+<configuration>
+
+    <!-- Logları dosyaya kaydetme -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>/var/log/spring-boot-app.log</file>  <!-- Log dosyası yolu -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logları konsola yazdırma -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logger ayarları -->
+    <root level="INFO">
+        <appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>

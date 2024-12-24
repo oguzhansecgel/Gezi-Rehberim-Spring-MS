@@ -54,7 +54,6 @@ services:
       - place-db
       - discovery-server
       - config-server
-      - redis
     networks:
       - common
     healthcheck:
@@ -199,7 +198,12 @@ services:
       - common
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
-
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200/_cat/health" ]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.14.3
@@ -273,6 +277,27 @@ services:
       - "3000:3000"
     networks:
       - common
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: loki-gezi-rehberim
+    ports:
+      - "3100:3100"
+    networks:
+      - common
+    volumes:
+      - ./monitoring/observability/loki-config.yaml:/etc/loki/loki-config.yaml
+
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: promtail
+    volumes:
+      - ./monitoring/observability/promtail.yaml:/etc/promtail/promtail.yaml  # Promtail konfigürasyon dosyasını burada tanımlıyoruz
+    networks:
+      - common
+
+
+
 
 networks:
   common:

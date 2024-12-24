@@ -1,0 +1,8 @@
+scrape_configs:
+  - job_name: 'place-service-logs'
+    static_configs:
+      - targets:
+          - 'place-service:8081'
+        labels:
+          job: place-service
+          __path__: /var/log/place-service/*.log

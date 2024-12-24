@@ -11,9 +11,6 @@ spring:
     template:
       default-topic: kafka-topic
 
-  redis:
-    host: redis_container
-    port: 6379
 
 management:
   endpoints:
@@ -23,8 +20,10 @@ management:
   endpoint:
     health:
       show-details: always
-
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 configurl: http://configserver:8079
-
 

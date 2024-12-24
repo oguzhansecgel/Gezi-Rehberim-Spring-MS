@@ -11,9 +11,8 @@ import com.gezi_rehberim.place_service.model.Place;
 import com.gezi_rehberim.place_service.repositories.PlaceRepositories;
 import com.gezi_rehberim.place_service.core.service.abstracts.PlaceImageService;
 import com.gezi_rehberim.place_service.service.abstracts.PlaceService;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class PlaceServiceImpl implements PlaceService {
     private final PlaceImageService placeImageService;
     private final SearchServiceProducer searchServiceProducer;
     private final PlaceMapping placeMapping;
-
+    private static final Logger logger = LoggerFactory.getLogger(PlaceService.class);
     public PlaceServiceImpl(PlaceRepositories placeRepositories, PlaceImageService placeImageService, SearchServiceProducer searchServiceProducer, PlaceMapping placeMapping) {
         this.placeRepositories = placeRepositories;
         this.placeImageService = placeImageService;
@@ -34,7 +33,6 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @CacheEvict(value = "place",allEntries = true)
     public CreatePlaceResponse createPlace(CreatePlaceRequest request) {
         Place place = placeMapping.createPlace(request);
 
@@ -67,8 +65,6 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @CacheEvict(value = "place", key = "'getAllPlace'")
-    @CachePut(value = "place", key = "#id")
     public UpdatePlaceResponse updatePlace(UpdatePlaceRequest request, int id) {
         Optional<Place> place = placeRepositories.findById(id);
         if (place.isEmpty())
@@ -82,7 +78,6 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @Cacheable(value = "place", key = "#id", unless = "#result == null")
     public Optional<GetByIdPlaceResponse> getByIdPlace(int id) {
         Optional<Place> place = placeRepositories.findById(id);
         if (place.isEmpty())
@@ -93,7 +88,6 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @Cacheable(value = "place", key = "'getAllPlace'", unless = "#result == null")
     public List<GetAllPlaceResponse> getAllPlaceList() {
         List<Place> places = placeRepositories.findAll();
         return placeMapping.placeToListPlace(places);
@@ -106,10 +100,10 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @CacheEvict(value = "place",allEntries = true)
     public void deletePlace(int id) {
         Optional<Place> optionalPlace = placeRepositories.findById(id);
         if (optionalPlace.isEmpty()) {
+            logger.error(PlaceMessage.PLACE_NOT_FOUND);
             throw new PlaceNotFoundException(PlaceMessage.PLACE_NOT_FOUND);
         }
 
