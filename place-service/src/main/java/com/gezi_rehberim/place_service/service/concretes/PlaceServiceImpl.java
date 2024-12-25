@@ -35,7 +35,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public CreatePlaceResponse createPlace(CreatePlaceRequest request) {
         Place place = placeMapping.createPlace(request);
-
+        logger.info("Place created: {}", place);
         List<String> imageUrls = placeImageService.savePlaceImages(request.getImageUrls());
 
         place.setImageUrls(imageUrls);
@@ -67,6 +67,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public UpdatePlaceResponse updatePlace(UpdatePlaceRequest request, int id) {
         Optional<Place> place = placeRepositories.findById(id);
+
         if (place.isEmpty())
         {
             throw new PlaceNotFoundException(PlaceMessage.PLACE_NOT_FOUND);
@@ -80,6 +81,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public Optional<GetByIdPlaceResponse> getByIdPlace(int id) {
         Optional<Place> place = placeRepositories.findById(id);
+        logger.info("GetById {}",id);
         if (place.isEmpty())
         {
             throw new PlaceNotFoundException(PlaceMessage.PLACE_NOT_FOUND);
@@ -90,6 +92,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public List<GetAllPlaceResponse> getAllPlaceList() {
         List<Place> places = placeRepositories.findAll();
+        logger.info("GetAllPlace List");
         return placeMapping.placeToListPlace(places);
     }
 
