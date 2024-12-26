@@ -18,6 +18,11 @@ management:
   endpoint:
     health:
       show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 configurl: http://configserver:8079
 
 

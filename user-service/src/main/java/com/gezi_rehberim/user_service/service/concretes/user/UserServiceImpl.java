@@ -8,6 +8,8 @@ import com.gezi_rehberim.user_service.core.message.user.UserMessage;
 import com.gezi_rehberim.user_service.models.User;
 import com.gezi_rehberim.user_service.repository.UserRepositories;
 import com.gezi_rehberim.user_service.service.abstracts.user.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepositories userRepositories;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserServiceImpl(UserRepositories userRepositories) {
         this.userRepositories = userRepositories;
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> getAllUser() {
         List<User> users = userRepositories.findAll();
+        logger.info("UserService");
         return UserMapping.INSTANCE.usersFromResponse(users);
     }
 

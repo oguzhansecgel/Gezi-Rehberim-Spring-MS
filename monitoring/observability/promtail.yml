@@ -14,3 +14,4 @@ scrape_configs:
           ##job: "spring-boot"
           job: "spring-boot"
           __path__: C:/log/place-service/*.log
+

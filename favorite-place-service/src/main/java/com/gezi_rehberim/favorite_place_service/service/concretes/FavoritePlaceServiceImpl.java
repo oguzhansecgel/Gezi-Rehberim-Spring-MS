@@ -16,6 +16,8 @@ import com.gezi_rehberim.favorite_place_service.model.Place;
 import com.gezi_rehberim.favorite_place_service.model.User;
 import com.gezi_rehberim.favorite_place_service.repository.FavoritePlaceRepositories;
 import com.gezi_rehberim.favorite_place_service.service.abstracts.FavoritePlaceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +30,7 @@ public class FavoritePlaceServiceImpl implements FavoritePlaceService {
     private final FavoritePlaceRepositories favoritePlaceRepositories;
     private final PlaceClient placeClient;
     private final UserClient userClient;
+    private static final Logger logger = LoggerFactory.getLogger(FavoritePlaceService.class);
 
     public FavoritePlaceServiceImpl(FavoritePlaceRepositories favoritePlaceRepositories, PlaceClient placeClient, UserClient userClient) {
         this.favoritePlaceRepositories = favoritePlaceRepositories;
@@ -69,7 +72,10 @@ public class FavoritePlaceServiceImpl implements FavoritePlaceService {
     public void removeFavoritePlace(String favoritePlaceId) {
         Optional<FavoritePlace> optionalFavoritePlace = favoritePlaceRepositories.findById(favoritePlaceId);
         if (optionalFavoritePlace.isEmpty())
+        {
+            logger.error("Favorite place id not found");
             throw new FavoritePlaceNotFoundException(FavoritePlaceMessage.FAVORITE_PLACE_NOT_FOUND);
+        }
 
         FavoritePlace favoritePlace = optionalFavoritePlace.get();
         favoritePlace.setFavorite(false);
